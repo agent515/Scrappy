@@ -24,13 +24,13 @@ Update the path of executable or binary file in webdriver.Chrome() [web-scraping
 
 _Pairs of Shoes are never enough.. So, let's find our options on flipkart_
 
-![](/images/search.png | width=500)
+![](/images/search.png){:width="500px"}
 
-![](/images/search-result.png | width=500)
+![](/images/search-result.png){:width="500x"}
 
-![](/images/csvGeneratedFile.PNG | width=250)
+![](/images/csvGeneratedFile.PNG){:width="250x"}
 
-![](/images/csvFile.PNG | width=750)
+![](/images/csvFile.PNG | width=750){:width="750x"}
 
 ### options
 > -a : about the util<br>

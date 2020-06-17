@@ -3,17 +3,18 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from selenium.webdriver.common.keys import Keys  # need to send keystrokes
 import re
-
 import sys, getopt
 
 def main(argv):
+    
     try:
         opts, args = getopt.getopt(argv, "ahpl:", ["limit=", "help"])
     except getopt.GetoptError:
         print("Either invalid option is used or none argument passed to the option which requires one.")
 
     printText = False
-    limit = None
+    limit = 10
+    
     for opt, arg in opts:
         if opt in ('-h', "--help"):
             print("-a : about the util\n-h : help\n-l : limit option setting the maximum no. of pages to parse. Default is 10.\n-p : print the product details in the CLI. Default is False")
@@ -26,6 +27,9 @@ def main(argv):
             print("A fun web-scraping utility which searches through Flipkart website and fetches important product details and \nsaves it to the .csv file in SearchResult folder.")
             sys.exit()
 
+    """
+        Initializing the webdriver for Google Chrome by providing the absolute path to the executable file in webdriver
+    """
     driver = webdriver.Chrome(
         'C:\Program Files\chromedriver_win32\chromedriver.exe')
 
@@ -44,6 +48,10 @@ def main(argv):
     button = driver.find_element_by_css_selector('.vh79eN')
     button.send_keys(Keys.ENTER)
 
+    """
+        In the search result, grid-layout and inner div classes are different for different categories..
+        As of now, these are the grid_classes and their inner-classes which I've come across during testing electronic, grocery and clothing items
+    """
     grid_classes = {
         '_3wU53n': {'itemName': '_3wU53n', 'specifications': 'tVe95H', 'price': '_1vC4OE _2rQ-NK', 'rating': 'hGSR34', 'imageUrl': '_3BTv9X', 'cmd' : "pd.DataFrame({'itemName': itemNameList, 'itemUrl': itemUrlList, 'specifications': specificationsList, 'price': priceList, 'imageUrl': imageUrlList, 'rating': ratingList})"},
         '_3liAhj': {'itemName': '_2cLu-l', 'specifications': '_1rcHFq', 'price': '_1vC4OE', 'rating': 'hGSR34', 'imageUrl': '_3BTv9X', 'cmd' : "pd.DataFrame({'itemName': itemNameList, 'itemUrl': itemUrlList, 'specifications': specificationsList,'price': priceList, 'imageUrl': imageUrlList, 'rating': ratingList})"},
@@ -59,9 +67,6 @@ def main(argv):
     soup = BeautifulSoup(content, 'html.parser')
 
     pageText = soup.find('div', attrs={'class': '_2zg3yZ'})
-    
-    if not limit:
-        limit = 10
     
     if pageText:
         pageText = pageText.span.string
@@ -118,8 +123,7 @@ def main(argv):
 
                     grid_class = '_3liAhj'
                     for col in div.find_all('div', attrs={'class': '_3liAhj'}):
-                        # print(col.prettify())
-                        # print()
+                        
                         itemUrl = siteUrl + col.a['href']
                         itemName = col.find('a', attrs={'class': '_2cLu-l'}).string
                         specifications = col.find(
@@ -156,16 +160,10 @@ def main(argv):
                     
                     grid_class = 'IIdQZO _1SSAGr'
                     for col in div.find_all('div', attrs={'class': 'IIdQZO _1SSAGr'}):
-                        # print(col.prettify())
-                        # print()
+                
                         itemUrl = siteUrl + col.a['href']
                         itemName = col.find('a', attrs={'class': '_2mylT6'}).string
                         brand = col.find('div', attrs={'class': '_2B_pmu'}).string
-                        # size = col.find('span', attrs={'class': '_3V_vUN'})
-                        # if size:
-                        #     size = size.decendents[1].decendents[1]
-                        # else:
-                        #     size = None
                         price = col.find('div', attrs={'class': '_1vC4OE'}).string
                         imageUrl = col.find('img', attrs={'class': '_3togXc'})['src']
 
@@ -185,10 +183,6 @@ def main(argv):
 
     df = eval(grid_classes[grid_class]['cmd'])
     df.to_csv('SearchResults/'+query+'.csv', index=False, encoding='utf-8')
-
-    if pageText:
-        print(currentPage)
-        print(totalPages)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -26,11 +26,11 @@ _Pairs of Shoes are never enough.. So, let's find our options on flipkart_
 
 ![](/images/search.png)
 
-![](/images/search_result.png)
+![](/images/search-result.png)
 
-![](/images/csvGeneratedFile.png)
+![](/images/csvGeneratedFile.PNG)
 
-![](/images/csvFile.png)
+![](/images/csvFile.PNG)
 
 ### options
 > -a : about the util

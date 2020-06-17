@@ -20,6 +20,18 @@ Update the path of executable or binary file in webdriver.Chrome() [web-scraping
 **Finally, Run the file**
 > python web-scraping-flipkart.py [OPTIONS]
 
+### Example
+
+_Pairs of Shoes are never enough.. So, let's find our options on flipkart_
+
+![](/images/search.png)
+
+![](/images/search_result.png)
+
+![](/images/csvGeneratedFile.png)
+
+![](/images/csvFile.png)
+
 ### options
 > -a : about the util
 > -h : help
